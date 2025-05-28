@@ -13,7 +13,7 @@ async function bootstrap() {
     ),
   };
 
-  const app = await NestFactory.create(AppModule);
+  const app = await NestFactory.create(AppModule, { httpsOptions });
   const PORT = process.env.PORT ?? 3000;
 
   console.log(`Server is running on ${PORT}`);
