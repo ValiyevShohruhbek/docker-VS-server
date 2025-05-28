@@ -1,0 +1,32 @@
+name: my_compose_container
+
+services:
+  nest-app:
+    build:
+      context: .
+    command: ['sh', '-c', 'npx prisma db push && yarn start:prod']
+    ports:
+      - '3000:4000'
+    depends_on:
+      postgres:
+        condition: service_healthy
+    environment:
+      - DATABASE_URL=${DATABASE_DOCKER_URL}
+    env_file:
+      - .env
+
+  postgres:
+    image: postgres:17.5
+    environment:
+      - POSTGRES_USER=${DATABASE_USER}
+      - POSTGRES_PASSWORD=${DATABASE_PASSWORD}
+      - POSTGRES_DB=${DATABASE_DB}
+    env_file:
+      - .env
+    healthcheck:
+      test: ['CMD-SHELL', 'pg_isready -U postgres -d test']
+      timeout: 3s
+      interval: 5s
+      retries: 3
+    ports:
+      - '5433:5432'
