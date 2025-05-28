@@ -6,6 +6,6 @@ export class UserService {
   constructor(private readonly prisma: PrismaService) {}
 
   async getAll() {
-    return await { message: 'Salomat' };
+    return await 'https://t.me/the_xchoo';
   }
 }
